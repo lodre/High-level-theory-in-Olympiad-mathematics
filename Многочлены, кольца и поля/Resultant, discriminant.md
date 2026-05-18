@@ -2,316 +2,283 @@
 topic: Многочлены, кольца и поля
 subtopic: "Resultant, discriminant"
 sources:
-  - "Prasolov — Polynomials (Springer 2010), §1.3 The resultant and the discriminant"
-  - "Svante Janson — Resultant and Discriminant of Polynomials (lecture notes)"
-  - "Henry Woody — Polynomial Resultants (UPS senior thesis, 2016)"
-  - "Pierre-Loïc Méliot — The resultant of two polynomials (Paris-Saclay notes)"
+  - "Prasolov — Polynomials (Springer 2010), §1.3"
+  - "Svante Janson — Resultant and Discriminant of Polynomials"
+  - "Henry Woody — Polynomial Resultants (UPS thesis, 2016)"
+  - "Pierre-Loïc Méliot — The resultant of two polynomials"
   - "Tom M. Apostol — Resultants of Cyclotomic Polynomials, Proc. AMS 24 (1970)"
   - "R. G. Swan — Factorization of polynomials over finite fields, Pacific J. Math. 12 (1962)"
-  - "Cox, Little, O'Shea — Ideals, Varieties, and Algorithms (гл. 3, elimination)"
-  - "Andreescu, Andrica — Putnam and Beyond (раздел Polynomials)"
-  - "Engel — Problem-Solving Strategies (гл. Polynomials)"
-  - "Wikipedia — Resultant / Discriminant / Cyclotomic polynomial / Mason–Stothers theorem"
+  - "Cox, Little, O'Shea — Ideals, Varieties, and Algorithms (гл. 3)"
+  - "Andreescu, Andrica — Putnam and Beyond"
+  - "Engel — Problem-Solving Strategies"
+  - "Wikipedia — Resultant / Discriminant / Cyclotomic polynomial"
   - "IMC Compendium"
   - "Putnam Compendium"
 problems_referenced:
   - IMC-2017-5
   - IMC-2018-9
-last_updated: 2026-04-27
+last_updated: 2026-05-18
 ---
 
 # Resultant, discriminant
 
 ## Scope
-Resultant двух многочленов как критерий общего корня и его представления (Sylvester matrix, $\prod(\alpha_i-\beta_j)$, Bezout-форма как элемент идеала $(f,g)$); discriminant как $\operatorname{Res}(f,f')$ и его поведение при сдвиге, произведении, специализации; явные формулы для трёхчленов $x^n+ax+b$, $\Phi_n$, $\operatorname{Res}(\Phi_m,\Phi_n)$ (Apostol); сигнатура $\Delta\in\mathbb{R}$ и количество вещественных корней; Stickelberger–Swan для $\mathbb{F}_p[x]$. Эти инструменты дают олимпиадные решения там, где «корни сложные, симметрии нет», но через коэффициенты получается чистый ответ. Наиболее частая роль на IMC — резюмировать аргумент «общий корень $\Rightarrow$ полиномиальное соотношение между параметрами».
 
-## Записи — Core
+Подтема охватывает результант двух многочленов как тест на общий корень и дискриминант одного многочлена как тест на кратный корень. Олимпиадная роль — переводить геометрический вопрос «есть ли общий / кратный корень» в чисто алгебраическое условие на коэффициенты, и наоборот извлекать целочисленные ограничения из существования корня. Сюда входят явные формулы для трёхчленов, циклотомики, исключение переменных и сигнатура дискриминанта над $\mathbb{R}$.
 
-### E1. Resultant (результант) через Sylvester matrix
+## Определения
 
-Формулировка. Пусть $f(x)=a_n x^n+\dots+a_0$, $g(x)=b_m x^m+\dots+b_0$ над коммутативным кольцом $R$, $a_n,b_m\ne 0$. Sylvester matrix $\mathrm{Syl}(f,g)\in R^{(n+m)\times(n+m)}$:
-$$
-\mathrm{Syl}(f,g)=\begin{pmatrix}
-a_n & a_{n-1} & \cdots & a_0 & & \\
-& a_n & a_{n-1} & \cdots & a_0 & \\
-& & \ddots & & & \ddots \\
-b_m & b_{m-1} & \cdots & b_0 & & \\
-& b_m & b_{m-1} & \cdots & b_0 & \\
-& & \ddots & & & \ddots
-\end{pmatrix}
-$$
-($m$ строк коэффициентов $f$, $n$ строк коэффициентов $g$). Тогда $\operatorname{Res}(f,g):=\det\mathrm{Syl}(f,g)\in R$. Над любым integral domain
-$$\operatorname{Res}(f,g)=0 \iff f,g \text{ имеют общий делитель степени }\ge 1\text{ в }\overline{K}[x].$$
+Пусть $R$ — коммутативное кольцо. Возьмём два многочлена
+$$f(x) = a_n x^n + \dots + a_0, \qquad g(x) = b_m x^m + \dots + b_0$$
+с $a_n, b_m \ne 0$.
 
-Условия применимости. $a_n,b_m\ne 0$ обязательно; иначе нужно специальное соглашение или работа в $\overline{K}$. Над $\mathbb{Z}$ результант — целое число.
+Матрица Сильвестра (Sylvester matrix) $\operatorname{Syl}(f, g) \in R^{(n+m) \times (n+m)}$ — это $m$ построчных сдвигов коэффициентов $f$, за которыми идут $n$ сдвигов коэффициентов $g$. Каждый сдвиг сдвигает строку вправо на одну позицию.
 
-Идея доказательства. Существование общего делителя $\iff$ существование $u,v$ с $uf+vg=0$, $\deg u<m$, $\deg v<n$ — это в точности нетривиальное ядро транспонированной $\mathrm{Syl}$.
+Результант (resultant) — это определитель матрицы Сильвестра:
+$$\operatorname{Res}(f, g) := \det \operatorname{Syl}(f, g) \in R.$$
 
-Используется в. Базис всех нижних записей. [IMC-2017-5: общие корни $f$ и $z^n-1$ — задача формулируется как $\operatorname{Res}(f,z^n-1)=0$, но решается тоньше через структуру коэффициентов].
+Над целостным кольцом $\operatorname{Res}(f, g) = 0$ тогда и только тогда, когда $f$ и $g$ имеют общий делитель положительной степени в $\overline{K}[x]$.
 
----
+Дискриминант (discriminant) определяется через результант с производной:
+$$\Delta(f) := \frac{(-1)^{n(n-1)/2}}{a_n} \operatorname{Res}(f, f').$$
 
-### E2. Resultant через корни (product-of-differences формула)
+Эквивалентная форма через корни $\alpha_1, \dots, \alpha_n$ многочлена $f$:
+$$\Delta(f) = a_n^{2n-2} \prod_{i < j} (\alpha_i - \alpha_j)^2.$$
 
-Формулировка. Если $f(x)=a_n\prod_{i=1}^n (x-\alpha_i)$, $g(x)=b_m\prod_{j=1}^m (x-\beta_j)$ над $\overline{K}$, то
-$$
-\operatorname{Res}(f,g)=a_n^m b_m^n \prod_{i,j}(\alpha_i-\beta_j)=a_n^m \prod_i g(\alpha_i)=(-1)^{nm} b_m^n \prod_j f(\beta_j).
-$$
-Следствия:
-- мультипликативность $\operatorname{Res}(fg,h)=\operatorname{Res}(f,h)\operatorname{Res}(g,h)$;
-- симметрия $\operatorname{Res}(g,f)=(-1)^{nm}\operatorname{Res}(f,g)$;
-- инвариантность относительно сдвига: $\operatorname{Res}(f(x+c),g(x+c))=\operatorname{Res}(f,g)$;
-- $\operatorname{Res}(f,x-a)=f(a)$ — на этом строится оценка $f(\alpha)$ через коэффициенты.
+Над целостным кольцом $\Delta(f) = 0$ тогда и только тогда, когда $f$ имеет кратный корень.
 
-Условия применимости. Любое поле; формула «через коэффициенты» работает в любом кольце через лифт $R\hookrightarrow R[a_n^{-1},b_m^{-1}]$ или через коэффициентную природу $\det\mathrm{Syl}$.
+## Записи — Основные
 
-Идея доказательства. Обе стороны — multilinear, antisymmetric, той же степени по коэффициентам $f$ и $g$ — это однозначно фиксирует формулу с точностью до константы; она проверяется на $f=x-\alpha$.
+### E1. Результант через матрицу Сильвестра
 
-Варианты и обобщения. $\operatorname{Res}(f,g_1 g_2)=\operatorname{Res}(f,g_1)\operatorname{Res}(f,g_2)$ — главный workhorse. $\operatorname{Res}$ для reverse: если $\hat f(x)=x^n f(1/x)$, $\hat g(x)=x^m g(1/x)$, то $\operatorname{Res}(\hat f,\hat g)=(-1)^{nm}\operatorname{Res}(f,g)$ (с поправкой на старшие коэффициенты, см. Janson).
+Формулировка. Для $f, g$ как в разделе «Определения» над целостным кольцом
+$$\operatorname{Res}(f, g) = 0 \iff f, g \text{ имеют общий делитель степени} \ge 1 \text{ в } \overline{K}[x].$$
 
-Используется в. Стандартный приём для построения многочлена с «комбинированными» корнями $\alpha_i+\beta_j$ (через $\operatorname{Res}_y(f(y),g(x-y))$) или $\alpha_i\beta_j$ (через $\operatorname{Res}_y(y^m f(x/y),g(y))$); регулярная Putnam-конструкция. Все формулы из E10–E13 — частные случаи product-of-differences.
+Условия применимости. Старшие коэффициенты $a_n, b_m$ должны быть ненулевыми. Иначе определитель матрицы Сильвестра ничего не говорит о настоящих корнях. Пример нарушения: $f(x) = p x + 1$ и $g(x) = x$ над $\mathbb{Z}$, формально рассмотренные после редукции по простому $p$. Старший коэффициент $f$ обнуляется, и приведённый результант $\overline{\operatorname{Res}} = 0$, хотя реальных общих корней у $f$ и $g$ в $\mathbb{Z}$ нет — у $f$ в $\mathbb{F}_p$ вообще нет корней.
+
+Идея доказательства. Существование общего делителя равносильно существованию ненулевых $u, v$ с $u f + v g = 0$, $\deg u < m$, $\deg v < n$. Это в точности нетривиальное ядро транспонированной матрицы Сильвестра.
 
 ---
 
-### E3. Discriminant (дискриминант) и связь $\operatorname{Res}(f,f')$
+### E2. Результант через корни и его свойства
 
-Формулировка. Для $f=a_n\prod(x-\alpha_i)$ степени $n$:
-$$
-\Delta(f)=a_n^{2n-2}\prod_{i<j}(\alpha_i-\alpha_j)^2=\frac{(-1)^{n(n-1)/2}}{a_n}\operatorname{Res}(f,f').
-$$
-Свойства:
-- $\Delta(f)=0 \iff f$ имеет кратный корень;
-- инвариантность относительно сдвига: $\Delta(f(x+c))=\Delta(f)$;
-- скейлинг $\Delta(c f)=c^{2n-2}\Delta(f)$;
-- произведение: $\Delta(fg)=\Delta(f)\Delta(g)\operatorname{Res}(f,g)^2$.
+Формулировка. Если $f(x) = a_n \prod (x - \alpha_i)$ и $g(x) = b_m \prod (x - \beta_j)$ над $\overline{K}$, то
+$$\operatorname{Res}(f, g) = a_n^m b_m^n \prod_{i, j} (\alpha_i - \beta_j) = a_n^m \prod_i g(\alpha_i) = (-1)^{nm} b_m^n \prod_j f(\beta_j).$$
 
-Условия применимости. Любое поле, $\operatorname{char}=0$ или $\operatorname{char}\nmid n a_n$ (иначе $\deg f'<n-1$ и нужна осторожность; см. E14).
+Прямые следствия:
 
-Идея доказательства. $f'(\alpha_i)=a_n\prod_{j\ne i}(\alpha_i-\alpha_j)$, подставив в product-of-differences, получаем $\operatorname{Res}(f,f')=a_n^{n-1}\prod f'(\alpha_i)=a_n^{2n-1}\prod_{i\ne j}(\alpha_i-\alpha_j)=(-1)^{n(n-1)/2}a_n\Delta(f)$.
+- мультипликативность: $\operatorname{Res}(f g, h) = \operatorname{Res}(f, h) \cdot \operatorname{Res}(g, h)$;
+- симметрия со знаком: $\operatorname{Res}(g, f) = (-1)^{n m} \operatorname{Res}(f, g)$;
+- инвариантность под сдвигом: $\operatorname{Res}(f(x + c), g(x + c)) = \operatorname{Res}(f, g)$;
+- частный случай: $\operatorname{Res}(f, x - a) = f(a)$.
 
-Варианты и обобщения. Discriminant $\in \mathbb{Z}$ для $f\in\mathbb{Z}[x]$ — это сильное целочисленное ограничение, которое часто и используется на олимпиадах.
-
-Используется в. Базовая запись — служит мостиком между «корни» и «коэффициенты». Многочисленные Putnam-задачи на кубический трёхчлен $x^3+px+q$ (типа «при каких $p,q$ ровно один real root») решаются через $\Delta=-4p^3-27q^2$.
+Идея доказательства. Обе стороны — мультилинейные антисимметричные функции от корней одной степени. Это однозначно фиксирует формулу с точностью до константы. Константа проверяется на $f = x - \alpha$.
 
 ---
 
-### E4. Bezout-представление результанта (resultant как элемент идеала $(f,g)$)
+### E3. Дискриминант и связь с $\operatorname{Res}(f, f')$
 
-Формулировка. Существуют $u(x),v(x)\in R[x]$ с $\deg u<m=\deg g$, $\deg v<n=\deg f$, такие что
-$$
-\operatorname{Res}(f,g)=u(x) f(x)+v(x) g(x).
-$$
-Следствие: $\operatorname{Res}(f,g)\in (f,g)\cap R$. Если $f,g\in\mathbb{Z}[x]$ и $f(\xi)=g(\xi)=0$ для алгебраического $\xi$, то $\operatorname{Res}(f,g)=0$, но если $\xi\in\mathbb{Z}$ только модуло $p$ — то $p\mid\operatorname{Res}(f,g)$.
+Формулировка. Для $f$ степени $n$ со старшим коэффициентом $a_n$ и простыми корнями
+$$\Delta(f) = a_n^{2 n - 2} \prod_{i < j} (\alpha_i - \alpha_j)^2 = \frac{(-1)^{n(n-1)/2}}{a_n} \operatorname{Res}(f, f').$$
 
-Условия применимости. Любое коммутативное кольцо. Особенно полезно над $\mathbb{Z}$: даёт «многочленный эквивалент» обычного $\gcd$.
+Свойства, нужные в задачах:
 
-Идея доказательства. Cofactor-разложение $\det\mathrm{Syl}(f,g)$: умножение $\mathrm{Syl}$ на вектор $(x^{n+m-1},\dots,x,1)^T$ слева даёт многочлены $x^{m-1}f, x^{m-2}f, \dots, f, x^{n-1}g, \dots, g$, поэтому $\det\mathrm{Syl}$ — линейная комбинация $f,g$ с многочленными коэффициентами.
+- $\Delta(f) = 0 \iff f$ имеет кратный корень;
+- инвариантность под сдвигом: $\Delta(f(x + c)) = \Delta(f)$;
+- скейлинг: $\Delta(c f) = c^{2 n - 2} \Delta(f)$;
+- для $f \in \mathbb{Z}[x]$ дискриминант — целое число, что даёт сильное арифметическое ограничение.
 
-Варианты и обобщения. Аналог leftover: если $h\mid f$, $h\mid g$, то $h\mid\operatorname{Res}(f,g)$ — но т.к. $\operatorname{Res}\in R$, это даёт $h$ — константу или $0$. Этот трюк, в частности, заменяет Гёделевский «общий корень $\Rightarrow$ резюмированное полиномиальное тождество» в задачах с integer constraints.
+Условия применимости. Поле должно иметь характеристику, не делящую $n \cdot a_n$. Иначе $\deg f' < n - 1$ и формула с $\operatorname{Res}(f, f')$ теряет смысл. Пример нарушения: $f(x) = x^p$ в характеристике $p$. Тогда $f'(x) = 0$, и $\operatorname{Res}(f, f')$ как определитель формально вырождается.
 
-Используется в. Задачи вида «$f,g\in\mathbb{Z}[x]$ имеют общим алгебраический корень $\xi$ — что можно сказать о коэффициентах» решаются через $\operatorname{Res}(f,m_\xi)$, где $m_\xi$ — минимальный многочлен. [IMC-2018-9: $P\mid Q^2+1$, $Q\mid P^2+1$ — через $\operatorname{Res}_x(P,Q^2+1)\cdot\operatorname{Res}_x(Q,P^2+1)$ и оценку степеней].
-
----
-
-## Записи — Standard
-
-### E5. Discriminant трёхчлена $x^n+ax+b$
-
-Формулировка. Для $f(x)=x^n+ax+b$, $n\ge 2$, в $\operatorname{char}=0$:
-$$
-\Delta(f)=(-1)^{n(n-1)/2}\bigl((1-n)^{n-1} a^n + n^n b^{n-1}\bigr).
-$$
-Проверки: $n=2$: $\Delta=a^2-4b$; $n=3$, $f=x^3+ax+b$: $\Delta=-(4a^3+27b^2)$.
-
-Условия применимости. Любое поле char $\nmid n$. При $\operatorname{char}=p\mid n$ формула остаётся как identity в $\mathbb{Z}[a,b]$, но содержательно $\Delta\equiv 0$.
-
-Идея доказательства. $\operatorname{Res}(x^n+ax+b, nx^{n-1}+a)$ через product-of-differences: корни $f'$ — это $(-a/n)^{1/(n-1)}\cdot\zeta$ по корням $(n-1)$-й степени из единицы, после симметризации остаётся $a^n$ и $b^{n-1}$.
-
-Варианты и обобщения. Для $f=x^n+a x^k+b$ есть аналогичная компактная формула (см. Swan 1962); классически даёт критерий неприводимости $x^n-x-1$ (Selmer): дискриминант не квадрат для всех $n\ge 2$ (ничего не доказывает напрямую, но индуцирует.)
-
-Используется в. [Putnam-1971-A6: дискриминант $x^3+ax+b$], стандартный кирпич для трёхчленов в Putnam shortlists. Контрольный тест неприводимости через Stickelberger–Swan (E13).
+Идея доказательства. Подставим $\alpha_i$ в $f'(x) = a_n \sum_k \prod_{j \ne k} (x - \alpha_j)$. Получим $f'(\alpha_i) = a_n \prod_{j \ne i} (\alpha_i - \alpha_j)$. По формуле через корни $\operatorname{Res}(f, f') = a_n^{n-1} \prod_i f'(\alpha_i) = a_n^{2 n - 1} \prod_{i \ne j} (\alpha_i - \alpha_j)$, что после симметризации даёт $(-1)^{n(n-1)/2} a_n \Delta(f)$.
 
 ---
 
-### E6. Sign of $\Delta\in\mathbb{R}$ и количество вещественных корней
+### E4. Представление Безу (Bezout): результант как элемент идеала
 
-Формулировка. Пусть $f\in\mathbb{R}[x]$, $\deg f=n$, без кратных корней. Если $s$ — число пар комплексно-сопряжённых корней (так что вещественных корней $r=n-2s$), то
-$$
-\operatorname{sign}(\Delta(f))=(-1)^s.
-$$
-В частности: $\Delta>0 \iff s$ чётно $\iff$ число невещественных корней делится на $4$. Для $n=2$: $\Delta>0\iff$ два вещественных корня. Для $n=3$: $\Delta>0\iff$ три вещественных корня; $\Delta<0\iff$ один.
+Формулировка. Существуют $u, v \in R[x]$ со степенями $\deg u < m$, $\deg v < n$, такие что
+$$\operatorname{Res}(f, g) = u(x) f(x) + v(x) g(x).$$
+Следствие: $\operatorname{Res}(f, g) \in (f, g) \cap R$.
 
-Условия применимости. $f\in\mathbb{R}[x]$, $\Delta\ne 0$. Аналог в $p$-adic / $\mathbb{F}_p$ — Stickelberger–Swan (E13).
+В олимпиадной форме это означает: если $f, g \in \mathbb{Z}[x]$ и оба имеют общий корень по модулю простого $p$, то $p \mid \operatorname{Res}(f, g)$. Если $f, g$ имеют общий алгебраический корень, то $\operatorname{Res}(f, g) = 0$ как целое.
 
-Идея доказательства. Каждая пара $(\alpha,\bar\alpha)$ даёт $(\alpha-\bar\alpha)^2=-4(\operatorname{Im}\alpha)^2<0$; пары real–real и real–complex/complex–real дают парные множители комплексно-сопряжённых, т.е. квадрат модуля — положительное.
+Идея доказательства. Разложение определителя матрицы Сильвестра по столбцам. Умножение $\operatorname{Syl}(f, g)$ слева на вектор $(x^{n + m - 1}, \dots, x, 1)^T$ даёт многочлены $x^{m-1} f, \dots, f, x^{n-1} g, \dots, g$. Значит, $\det \operatorname{Syl}$ — целочисленная линейная комбинация этих многочленов.
 
-Используется в. Стандартный приём для real-root counting там, где Sturm sequence громоздок; кубики и quartics в Putnam регулярны (типа «при каких $a$ многочлен $x^4+ax^2+1$ имеет 4 real roots»).
+## Записи — Стандартные
 
----
+### E5. Дискриминант трёхчлена $x^n + a x + b$
 
-### E7. Multiplicativity и поведение под замены переменных
+Формулировка. В характеристике $0$
+$$\Delta(x^n + a x + b) = (-1)^{n(n-1)/2} \bigl( (1 - n)^{n - 1} a^n + n^n b^{n - 1} \bigr).$$
 
-Формулировка. Помимо $\operatorname{Res}(fg,h)=\operatorname{Res}(f,h)\operatorname{Res}(g,h)$, полезно:
-- $\operatorname{Res}(f(x),g(x))=\operatorname{Res}(f(x+c),g(x+c))$ — translation;
-- $\operatorname{Res}(f(\lambda x),g(\lambda x))=\lambda^{nm}\operatorname{Res}(f,g)$ если $f,g$ моничные (общий случай — с поправкой на старшие коэффициенты);
-- если $h(x)=p(q(x))$ с $\deg q=k$, то $\operatorname{Res}(f,h)=\operatorname{Res}(f,p\circ q)=\prod_\alpha p(q(\alpha))=\operatorname{Res}_y(f(\text{?}),...)$ — composition formula: $\operatorname{Res}_x(f(x),p(q(x)))=a_n^{\deg p}\prod_\alpha p(q(\alpha))$, что часто переписывается через $\operatorname{Res}(p, f \circ q^{-1})$ символически.
+Проверка: $n = 2$ даёт $a^2 - 4 b$. $n = 3$ даёт $-(4 a^3 + 27 b^2)$. $n = 4$ даёт $-27 a^4 + 256 b^3$.
 
-Условия применимости. Все формулы — над любым полем; над кольцом нужны обратимости старших коэффициентов в нужных местах.
+Условия применимости. Характеристика поля не делит $n$. Иначе $f'$ теряет старший член, и формула содержит ложные множители.
 
-Идея доказательства. Все три — прямой подсчёт через product-of-differences.
-
-Варианты и обобщения. Формула для $\operatorname{Res}(f(x),g(y)-x)$ как многочлена от $y$ — стандартный путь для построения многочлена с корнями $\alpha_i+\beta_j$ (через $\operatorname{Res}_x(f(x),g(y-x))$), $\alpha_i\beta_j$ (через $\operatorname{Res}_x(f(x), x^m g(y/x))$), $\alpha_i^k$ (через $\operatorname{Res}_x(f(x), y-x^k)$). Это конструктивный аналог Vieta для составных корней.
-
-Используется в. Построить многочлен с заданными «комбинированными» корнями — типичный прелим к задачам про Galois-симметрию (Putnam-archive несколько раз).
+Идея доказательства. Прямо: $\operatorname{Res}(x^n + a x + b, n x^{n-1} + a)$ через произведение значений второго многочлена на корнях первого. Корни производной — это $n - 1$ корней из $-a/n$, на которых $f$ принимает компактное значение.
 
 ---
 
-### E8. Resultant $\operatorname{Res}(x^n-a^n,x^m-b^m)$ и $x^n-1$, $x^m-1$
+### E6. Знак $\Delta$ и количество вещественных корней
+
+Формулировка. Пусть $f \in \mathbb{R}[x]$ степени $n$ без кратных корней. Обозначим $s$ — число пар комплексно сопряжённых корней (число вещественных корней тогда равно $n - 2 s$). Тогда
+$$\operatorname{sign}(\Delta(f)) = (-1)^s.$$
+
+Частные случаи:
+
+- для $n = 2$: $\Delta > 0$ — два различных вещественных корня;
+- для $n = 3$: $\Delta > 0$ — все три корня вещественны; $\Delta < 0$ — один вещественный, два комплексных.
+
+Условия применимости. Многочлен не имеет кратных корней, иначе $\Delta = 0$ и знак не определён. Пример: $f(x) = (x - 1)^2 (x^2 + 1)$, $\Delta = 0$, утверждение неприменимо.
+
+Идея доказательства. Каждая пара комплексно сопряжённых $(\alpha, \bar\alpha)$ даёт множитель $(\alpha - \bar\alpha)^2 = -4 (\operatorname{Im} \alpha)^2 < 0$. Остальные пары — либо вещественно-вещественные с положительным квадратом, либо пары комплексно сопряжённых произведений, дающие квадраты модулей.
+
+---
+
+### E7. Замены переменных и композиция
 
 Формулировка.
-$$
-\operatorname{Res}(x^n-1,x^m-1)=\begin{cases}0,& d=\gcd(m,n)>1,\\ 0,& d=1, m,n>1 \text{ — нет, see ниже}\end{cases}
-$$
-Точнее: $x^n-1$ и $x^m-1$ имеют общим делителем $x^d-1$, $d=\gcd(m,n)$, поэтому $\operatorname{Res}=0\iff d>1\iff (m,n)\ne(1,k)$. Для $a,b\in\mathbb{C}^\times$:
-$$
-\operatorname{Res}(x^n-a^n,x^m-b^m)=\prod_{i,j}(a\zeta_n^i - b\zeta_m^j),\quad \zeta_k=e^{2\pi i/k}.
-$$
 
-Условия применимости. Стандартный шаблон для trig-сумм и multiplicative identities.
+- Сдвиг: $\operatorname{Res}(f(x + c), g(x + c)) = \operatorname{Res}(f, g)$.
+- Скейлинг для моничных $f, g$: $\operatorname{Res}(f(\lambda x), g(\lambda x)) = \lambda^{n m} \operatorname{Res}(f, g)$.
+- Композиция: $\operatorname{Res}_y(f(y), g(x - y))$ как многочлен от $x$ — это многочлен с корнями $\alpha_i + \beta_j$, степени $n m$, со старшим коэффициентом $a_n^m b_m^n$.
 
-Идея доказательства. Корни $x^n-a^n$ — $\{a\zeta_n^i\}$, корни $x^m-b^m$ — $\{b\zeta_m^j\}$; product-of-differences даёт ответ.
+Аналогично, $\operatorname{Res}_y(f(y), y^m g(x / y))$ даёт многочлен с корнями $\alpha_i \beta_j$.
 
-Варианты и обобщения. Для $\gcd(m,n)=1$ известны компактные представления через циклотомические тождества. Дал тождества типа $\prod_{k=1}^{n-1}(1-\zeta_n^k)=n$ — частный случай $\operatorname{Res}(x^n-1, x-1)/(x-1)|_{x=1}=n$.
-
-Используется в. Задачи на циклотомические тождества и trig-произведения; типичный олимпиадный шаблон.
+Идея доказательства. Все три — прямой подсчёт по формуле произведения разностей.
 
 ---
 
-### E9. Discriminant of $\Phi_n$ (циклотомика)
+### E8. Результант $\operatorname{Res}(x^n - 1, x^m - 1)$
 
-Формулировка. Для cyclotomic polynomial $\Phi_n$:
-$$
-\operatorname{disc}(\Phi_n)=\frac{(-1)^{\varphi(n)/2}\, n^{\varphi(n)}}{\prod_{p\mid n} p^{\varphi(n)/(p-1)}}.
-$$
-В частности: для простого $p$, $\operatorname{disc}(\Phi_p)=(-1)^{(p-1)/2}p^{p-2}$. Для $p^k$ — формула $(-1)^{\varphi(p^k)/2}p^{p^{k-1}((p-1)k-1)}$.
+Формулировка. Многочлены $x^n - 1$ и $x^m - 1$ имеют общим делителем $x^d - 1$, где $d = \gcd(m, n)$. Значит,
+$$\operatorname{Res}(x^n - 1, x^m - 1) = 0 \iff d > 1.$$
 
-Условия применимости. $n\ge 3$. Знак — $(-1)^{\varphi(n)/2}$.
+В общем случае для $a, b \in \mathbb{C}^\times$
+$$\operatorname{Res}(x^n - a^n, x^m - b^m) = \prod_{i = 0}^{n - 1} \prod_{j = 0}^{m - 1} (a \zeta_n^i - b \zeta_m^j), \qquad \zeta_k = e^{2 \pi i / k}.$$
 
-Идея доказательства. $\operatorname{disc}(\Phi_n)\cdot\prod_{d<n,\,d\mid n}\operatorname{disc}(\Phi_d)\cdot\prod_{d_1\ne d_2}\operatorname{Res}(\Phi_{d_1},\Phi_{d_2})=\operatorname{disc}(x^n-1)=(-1)^{(n-1)n/2}n^n$ (с поправкой на $x=1$); индукцией по делителям + Apostol (E11).
+Условия применимости. Характеристика поля не делит $m n$, иначе $x^n - 1$ становится непростым (наследует кратные корни).
 
-Варианты и обобщения. Discriminant of $\mathbb{Q}(\zeta_n)$ совпадает (с точностью до $\pm$) с $\operatorname{disc}(\Phi_n)/(\text{conductor stuff})$; даёт integer ring $\mathbb{Z}[\zeta_n]$ для $n=p^k$.
-
-Используется в. Аргументы про $p$-адические оценки циклотомических значений; Lawrence Sun handout по олимпиадной teorii чисел использует $v_p(\Phi_n(a))$.
+Идея доказательства. Подставить корни одного многочлена в другой по формуле произведения значений из E2.
 
 ---
 
-### E10. Elimination через $\operatorname{Res}_y$: проекция системы на одну переменную
+### E9. Дискриминант циклотомического многочлена $\Phi_n$
 
-Формулировка. Пусть $P(x,y),Q(x,y)\in K[x,y]$ — многочлены; $R(x):=\operatorname{Res}_y(P,Q)\in K[x]$. Тогда $R(\alpha)=0\iff$ существует $\beta\in\overline{K}$ с $P(\alpha,\beta)=Q(\alpha,\beta)=0$ ИЛИ старшие коэффициенты $P,Q$ по $y$ оба обнуляются при $x=\alpha$.
+Формулировка. Для $n \ge 3$
+$$\operatorname{disc}(\Phi_n) = \frac{(-1)^{\varphi(n)/2} \, n^{\varphi(n)}}{\prod_{p \mid n} p^{\varphi(n)/(p - 1)}}.$$
 
-Условия применимости. Нужно либо предполагать, что хотя бы один старший по $y$ коэффициент не зануляется, либо отдельно обработать degenerate locus.
+Частные случаи:
 
-Идея доказательства. Прямое следствие E1 для $P,Q\in (K[x])[y]$.
+- для простого $p$: $\operatorname{disc}(\Phi_p) = (-1)^{(p - 1)/2} p^{p - 2}$;
+- для $\Phi_4 = x^2 + 1$: $\operatorname{disc} = -4$.
 
-Варианты и обобщения. Для систем из $k+1$ уравнений в $k$ переменных — sparse/multivariate resultant (Macaulay), но это уже за рамками IMC. На олимпиаде elimination через $\operatorname{Res}$ применим в задачах вида «найти все рациональные точки кривой $C_1\cap C_2$».
-
-Используется в. [IMC-2018-9: $\operatorname{Res}_x(P(x), Q(x)^2+1)\in\mathbb{Z}$ — целочисленное ограничение, дающее ограниченный набор пар $(P,Q)$].
-
----
-
-## Записи — Exotic
-
-### E11. Apostol's resultant formula для $\Phi_m,\Phi_n$
-
-Формулировка. Для $1\le m<n$:
-$$
-\operatorname{Res}(\Phi_m,\Phi_n)=\begin{cases}
-p^{\varphi(m)},& n/m=p^k, p\text{ — простое},k\ge 1,\\
-1,& \text{иначе (т.е. }n/m\text{ имеет }\ge 2\text{ простых делителей или дроб.)}.
-\end{cases}
-$$
-
-Условия применимости. $m\ne n$. Симметрию $\operatorname{Res}(\Phi_n,\Phi_m)=\pm\operatorname{Res}(\Phi_m,\Phi_n)$ используем при необходимости.
-
-Идея доказательства. $\operatorname{Res}(\Phi_m,\Phi_n)=\prod_{\zeta:\,\Phi_n(\zeta)=0}\Phi_m(\zeta)$; для primitive $n$-го корня $\zeta$ значение $\Phi_m(\zeta)$ — известный $p$-power по теории циклотомических полей (Apostol 1970, Лемма 1).
-
-Используется в. Доказательства, что $\Phi_n(a)$ имеют специфические простые делители (Lawrence Sun handout), Bang's theorem (Zsygmondy для $a^n-b^n$). Чисто на IMC встречается косвенно — через Zsygmondy.
+Идея доказательства. Полное разложение $x^n - 1 = \prod_{d \mid n} \Phi_d(x)$ даёт связь дискриминанта $x^n - 1$ с произведением дискриминантов всех $\Phi_d$ и парных результантов. Индукция по делителям плюс формула Апостоля (E11) даёт ответ.
 
 ---
 
-### E12. Discriminant произведения $\Delta(fg)$ и подъём через $\operatorname{Res}$
+### E10. Исключение переменной (elimination)
 
-Формулировка.
-$$
-\Delta(fg)=\Delta(f)\,\Delta(g)\,\operatorname{Res}(f,g)^2.
-$$
-В частности, если $f,g$ имеют общий корень, $\Delta(fg)=0$ автоматически (через $\operatorname{Res}=0$).
+Формулировка. Пусть $P, Q \in K[x, y]$. Рассмотрим их как многочлены от $y$ с коэффициентами в $K[x]$. Тогда $R(x) := \operatorname{Res}_y(P, Q) \in K[x]$ — многочлен от одной переменной. Его корни — это в точности $x$-координаты общих нулей системы $P = Q = 0$, плюс возможные «фантомные» корни в местах, где старшие по $y$ коэффициенты обоих многочленов одновременно зануляются.
 
-Условия применимости. Любое поле char $\nmid$ степени.
+Условия применимости. Хотя бы один из старших по $y$ коэффициентов $P, Q$ не зануляется тождественно. Пример нарушения: $P(x, y) = x y$, $Q(x, y) = x y + 1$. Старший по $y$ коэффициент обоих — $x$. При $x = 0$ оба многочлена выраждаются в константы $0$ и $1$. Формальный $\operatorname{Res}_y$ обнуляется при $x = 0$, хотя реально общего решения там нет.
 
-Идея доказательства. $\Delta=\prod_{i<j}(\gamma_i-\gamma_j)^2$ для всех корней $\gamma$ объединения; разделить пары на «оба из $f$», «оба из $g$», «одна из $f$ одна из $g$» — последняя группа даёт $\operatorname{Res}(f,g)^2/\text{lc}^2$.
+Идея доказательства. Прямое применение E1, рассматривая $P, Q$ как элементы $K[x][y]$.
 
-Варианты и обобщения. Аналог для $\Delta(f^k)=0$ при $k\ge 2$, потому что есть кратные корни.
+## Записи — Редкие
 
-Используется в. Конструктивные доказательства неприводимости через сравнение дискриминантов: если разложение $f=gh$ имеет $\Delta(f)$ не делящееся на $\Delta(g)\Delta(h)$ корректно — противоречие.
+### E11. Формула Апостоля для $\operatorname{Res}(\Phi_m, \Phi_n)$
 
----
+Для $1 \le m < n$:
+$$\operatorname{Res}(\Phi_m, \Phi_n) = \begin{cases} p^{\varphi(m)}, & n / m = p^k, \ p \text{ — простое}, \\ 1, & \text{иначе}. \end{cases}$$
 
-### E13. Stickelberger–Swan: дискриминант и чётность числа неприводимых множителей в $\mathbb{F}_p[x]$
+Доказательство (Apostol 1970) использует, что $\Phi_m(\zeta) = p$ для примитивного корня $\zeta$ степени $n$, когда $n / m$ — степень простого $p$.
 
-Формулировка. Пусть $f\in\mathbb{F}_p[x]$ — squarefree моничный, $\deg f=n$, и $r$ — число его неприводимых множителей над $\mathbb{F}_p$.
-- При $p$ нечётном: $r\equiv n\pmod 2 \iff \Delta(f)\in(\mathbb{F}_p^\times)^2$.
-- При $p=2$: пусть $F\in\mathbb{Z}[x]$ — лифт $f$, $\Delta(F)\in\mathbb{Z}$. Тогда $\Delta(F)\equiv 1\pmod 8 \iff r\equiv n\pmod 2$, иначе $\Delta(F)\equiv 5\pmod 8$.
-
-Условия применимости. Squarefree (иначе $\Delta=0$); характеристика поля сравнима с условиями.
-
-Идея доказательства. Для нечётного $p$: action of $\operatorname{Frob}_p$ на корнях имеет signature $(-1)^{n-r}$, что совпадает с символом Лежандра $\left(\frac{\Delta}{p}\right)$ через Vandermonde. Случай $p=2$ требует $2$-адического подъёма (Swan 1962).
-
-Варианты и обобщения. Swan даёт явную формулу для дискриминанта трёхчленов $x^n+x^k+1\in\mathbb{F}_2[x]$ — приложения в кодах и криптографии.
-
-Используется в. Тест неприводимости трёхчленов и пентаномов над $\mathbb{F}_2$. На IMC встречается редко — но идея «проверить $\Delta$ на квадратичность» общеолимпиадная.
+Проверка: $\operatorname{Res}(\Phi_2, \Phi_4) = (i + 1)(- i + 1) = 2 = 2^{\varphi(2)}$.
 
 ---
+
+### E12. Стикельбергер–Сван (Stickelberger–Swan)
+
+Для бесквадратного моничного $f \in \mathbb{F}_p[x]$ степени $n$ с $r$ неприводимыми множителями над $\mathbb{F}_p$:
+
+- при нечётном $p$: $r \equiv n \pmod 2 \iff \Delta(f) \in (\mathbb{F}_p^\times)^2$;
+- при $p = 2$: $r \equiv n \pmod 2 \iff \Delta(F) \equiv 1 \pmod 8$, где $F \in \mathbb{Z}[x]$ — целочисленный подъём $f$.
+
+Это даёт быстрый тест чётности числа неприводимых множителей через дискриминант. Прежде всего применяется к трёхчленам над $\mathbb{F}_2$.
+
+## Использования
+
+E1 (тест общего корня), E10 (исключение переменной): IMC-2017-5 — общие корни $f$ с $z^n - 1$. Условие $c_i c_{n - 2 - i} = 0$ переводится в анализ матрицы Сильвестра.
+
+E4 (Безу-представление), E10: IMC-2018-9 — взаимная делимость $P \mid Q^2 + 1$, $Q \mid P^2 + 1$. Целочисленный результант $\operatorname{Res}_x(P, Q^2 + 1)$ ограничивает степени.
+
+E2: построение многочленов с корнями $\alpha_i + \beta_j$ или $\alpha_i \beta_j$ — типичная Putnam-задача.
+
+E3, E5: задачи на кубики $x^3 + p x + q$, где условие на число вещественных корней выражается через $\Delta = -(4 p^3 + 27 q^2)$.
+
+E6: подсчёт вещественных корней многочленов невысоких степеней без Sturm-цепочек.
+
+E7: построение Галуа-симметричных многочленов с заданными комбинациями корней.
+
+E8: вычисление тригонометрических произведений вида $\prod (2 - 2 \cos(2 \pi k / n))$.
+
+E9, E11: $p$-адические оценки $\Phi_n(a)$, теорема Бэнга–Зигмонди.
+
+E12: тест неприводимости трёхчленов $x^n + x^k + 1$ над $\mathbb{F}_2$.
 
 ## Self-test
 
-1. Найди все целые $(p,q)$ с $|q|\le 2$, при которых $x^3+px+q$ имеет ровно один вещественный корень.
+1. Найди все целые $(p, q)$ с $|q| \le 2$, при которых $x^3 + p x + q$ имеет ровно один вещественный корень.
 
-2. Пусть $f(x)=x^3+ax+b$ и $g(x)=x^3+cx+d$ имеют общий комплексный корень, причём $(a,b)\ne(c,d)$. Покажи, что общий корень $\alpha$ рационален и удовлетворяет $\alpha=(d-b)/(a-c)$ (при $a\ne c$).
+2. Пусть $f(x) = x^3 + a x + b$ и $g(x) = x^3 + c x + d$ имеют общий комплексный корень, причём $(a, b) \ne (c, d)$. Покажи, что общий корень рационален и при $a \ne c$ равен $(d - b)/(a - c)$.
 
-3. Пусть $f\in\mathbb{Z}[x]$ моничный, степени $n\ge 2$. Докажи, что $\Delta(f)=0$ тогда и только тогда, когда существует $\alpha\in\overline{\mathbb{Q}}$ с $f(\alpha)=f'(\alpha)=0$.
+3. Пусть $f \in \mathbb{Z}[x]$ моничный, степени $n \ge 2$. Докажи: $\Delta(f) = 0$ тогда и только тогда, когда существует $\alpha \in \overline{\mathbb{Q}}$ с $f(\alpha) = f'(\alpha) = 0$.
 
-4. Пусть $a,b\in\mathbb{Z}$, $a\ne 0$, $n\ge 2$. Установи необходимое и достаточное условие на $a,b$ для того, чтобы $f(x)=x^n+ax+b$ имел кратный корень.
+4. Пусть $a, b \in \mathbb{Z}$, $a \ne 0$, $n \ge 2$. Установи необходимое и достаточное условие на $a, b$ для того, чтобы $x^n + a x + b$ имел кратный корень.
 
-5. Покажи, что для любого $n\ge 3$ и $\zeta=e^{2\pi i/n}$
-$$
-\prod_{k=1}^{n-1}\bigl(2-2\cos\tfrac{2\pi k}{n}\bigr)=n^2.
-$$
+5. Покажи, что для $n \ge 3$ и $\zeta = e^{2 \pi i / n}$
+$$\prod_{k = 1}^{n - 1} \bigl( 2 - 2 \cos \tfrac{2 \pi k}{n} \bigr) = n^2.$$
 
-6. Многочлены $f(x)=x^2+ax+b$ и $g(x)=x^2+cx+d$ имеют общий комплексный корень. Найди компактное полиномиальное соотношение между $a,b,c,d$.
+6. Многочлены $f(x) = x^2 + a x + b$ и $g(x) = x^2 + c x + d$ имеют общий комплексный корень. Найди полиномиальное соотношение между $a, b, c, d$.
 
-7. Пусть $f\in\mathbb{Z}[x]$ моничный неприводимый степени $n\ge 2$. Докажи, что $\Delta(f)\ne 0$. (Этот факт делает discriminant корректно определённым инвариантом числового поля $\mathbb{Q}(\alpha)$.)
+7. Пусть $f \in \mathbb{Z}[x]$ моничный неприводимый степени $n \ge 2$. Докажи, что $\Delta(f) \ne 0$.
 
 ## Решения
 
-1. $\Delta=-4p^3-27q^2$. Один real $\iff \Delta<0\iff 4p^3+27q^2>0$, т.е. $p^3>-27q^2/4$.
-- $q=0$: $p^3>0\iff p\ge 1$.
-- $q=\pm 1$: $p^3>-27/4$, т.е. $p\ge -1$.
-- $q=\pm 2$: $p^3>-27$, т.е. $p\ge -2$ (при $p=-3, q=\pm 2$: $\Delta=108-108=0$ — кратный корень, два различных вещественных).
+1. $\Delta = -4 p^3 - 27 q^2$. Ровно один вещественный корень — это $\Delta < 0$, то есть $4 p^3 + 27 q^2 > 0$.
 
-2. Из $f(\alpha)-g(\alpha)=0$: $(a-c)\alpha+(b-d)=0$, при $a\ne c$ получаем $\alpha=(d-b)/(a-c)\in\mathbb{Q}$. Если $a=c$, то $b=d$ (общий корень даёт $b=d$), но это противоречит $(a,b)\ne(c,d)$.
+   При $q = 0$: $p^3 > 0$, значит $p \ge 1$.
 
-3. $\Leftarrow$: $f(\alpha)=f'(\alpha)=0\Rightarrow\operatorname{Res}(f,f')=0\Rightarrow\Delta(f)=(-1)^{n(n-1)/2}\operatorname{Res}(f,f')=0$.
-$\Rightarrow$: $\Delta=a_n^{2n-2}\prod_{i<j}(\alpha_i-\alpha_j)^2=0\Rightarrow\exists i\ne j: \alpha_i=\alpha_j$, тогда $\alpha=\alpha_i$ — кратный корень $f$, и $f'(\alpha)=0$.
+   При $q = \pm 1$: $p^3 > -27/4$, значит $p \ge -1$.
 
-4. По E5: $\Delta(f)=(-1)^{n(n-1)/2}\bigl((1-n)^{n-1}a^n+n^n b^{n-1}\bigr)$. Кратный корень $\iff\Delta(f)=0\iff(1-n)^{n-1}a^n+n^n b^{n-1}=0\iff n^n b^{n-1}=(n-1)^{n-1}(-1)^n a^n$. Для $n=2$: $b=a^2/4$ (т.е. $a^2=4b$). Для $n=3$: $27 b^2=-4 a^3$ (требует $a\le 0$), классическое условие $4a^3+27b^2=0$.
+   При $q = \pm 2$: $p^3 > -27$, значит $p \ge -2$ (при $p = -3, q = \pm 2$ получается $\Delta = 0$).
 
-5. $\prod_{k=1}^{n-1}(1-\zeta^k)=n$: формально $x^n-1=(x-1)\prod_{k=1}^{n-1}(x-\zeta^k)$, делим на $(x-1)$ и подставляем $x=1$ через L'Hopital / производную, получаем $n=\prod(1-\zeta^k)$. Тогда $|1-\zeta^k|^2=(1-\zeta^k)(1-\bar\zeta^k)=2-2\cos(2\pi k/n)$. Перемножая: $\prod_{k=1}^{n-1}(2-2\cos\tfrac{2\pi k}{n})=\bigl|\prod_{k=1}^{n-1}(1-\zeta^k)\bigr|^2=n^2$.
+2. Вычтем $g$ из $f$: $(a - c) \alpha + (b - d) = 0$. При $a \ne c$ имеем $\alpha = (d - b)/(a - c)$, что рационально. При $a = c$ получаем $b = d$, но это противоречит $(a, b) \ne (c, d)$.
 
-6. $\operatorname{Res}(f,g)=0$ при общем корне. По формуле Sylvester для двух квадратичных:
-$$
-\operatorname{Res}(f,g)=\det\begin{pmatrix}1 & a & b & 0\\ 0 & 1 & a & b\\ 1 & c & d & 0\\ 0 & 1 & c & d\end{pmatrix}=(b-d)^2+(a-c)(ad-bc)=0.
-$$
-Эквивалентно: $(b-d)^2=(a-c)(bc-ad)$. Sanity-check: $f=x^2-1, g=x^2-3x+2$ имеют общий корень $1$, $(a,b,c,d)=(0,-1,-3,2)$, $(b-d)^2=9$, $(a-c)(bc-ad)=3\cdot 3=9$. ✓
+3. Если $f(\alpha) = f'(\alpha) = 0$, то $\operatorname{Res}(f, f') = 0$, откуда $\Delta(f) = 0$.
 
-7. От противного: $f$ неприводим и $\Delta(f)=0$, значит $\gcd(f,f')\ne 1$ в $\mathbb{Q}[x]$. Но $\deg f'<\deg f$ и $f$ неприводим, поэтому $\gcd(f,f')\in\{1,f\}$. Если $\gcd=f$, то $f\mid f'$, что невозможно по степеням (кроме $f'=0$ — невозможно в char $0$ для непостоянного $f$). Значит $\gcd=1$, $\operatorname{Res}(f,f')\ne 0$, $\Delta(f)\ne 0$.
+   В обратную сторону: $\Delta = a_n^{2 n - 2} \prod (\alpha_i - \alpha_j)^2 = 0$ даёт $\alpha_i = \alpha_j$ для каких-то $i \ne j$. Этот корень кратный, и в нём $f' = 0$.
+
+4. По E5 имеем $\Delta(f) = (-1)^{n(n-1)/2} \bigl( (1 - n)^{n - 1} a^n + n^n b^{n - 1} \bigr)$. Кратный корень соответствует $\Delta(f) = 0$, то есть
+   $$n^n b^{n - 1} = (n - 1)^{n - 1} (-1)^n a^n.$$
+   Для $n = 2$ это $b = a^2 / 4$. Для $n = 3$ — классическое $4 a^3 + 27 b^2 = 0$.
+
+5. Известно тождество $\prod_{k = 1}^{n - 1} (1 - \zeta^k) = n$. Действительно, $\frac{x^n - 1}{x - 1} = \prod_{k = 1}^{n - 1} (x - \zeta^k)$, подстановка $x = 1$ даёт $n$.
+
+   Дальше $|1 - \zeta^k|^2 = (1 - \zeta^k)(1 - \bar\zeta^k) = 2 - 2 \cos(2 \pi k / n)$.
+
+   Перемножая по $k$: $\prod (2 - 2 \cos \tfrac{2 \pi k}{n}) = \bigl| \prod (1 - \zeta^k) \bigr|^2 = n^2$.
+
+6. Матрица Сильвестра для двух квадратных многочленов даёт
+   $$\operatorname{Res}(f, g) = \det \begin{pmatrix} 1 & a & b & 0 \\ 0 & 1 & a & b \\ 1 & c & d & 0 \\ 0 & 1 & c & d \end{pmatrix} = (b - d)^2 + (a - c)(a d - b c) = 0.$$
+
+   Эквивалентно: $(b - d)^2 = (a - c)(b c - a d)$.
+
+   Проверка: $f = x^2 - 1$, $g = x^2 - 3 x + 2$, общий корень $1$. Подставляя $(a, b, c, d) = (0, -1, -3, 2)$: $(-3)^2 = 9$, $(3)(3) = 9$. Сходится.
+
+7. От противного: $f$ неприводим и $\Delta(f) = 0$. Тогда $\gcd(f, f') \ne 1$ в $\mathbb{Q}[x]$.
+
+   Поскольку $f$ неприводим, общий делитель равен либо $1$, либо $f$. Случай $\gcd = f$ означает $f \mid f'$, но $\deg f' < \deg f$ — противоречие (и $f' \ne 0$ в характеристике $0$, поскольку $f$ непостоянный).
+
+   Значит, $\gcd = 1$, $\operatorname{Res}(f, f') \ne 0$, $\Delta(f) \ne 0$.
